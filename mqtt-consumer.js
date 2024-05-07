@@ -2,7 +2,7 @@
 const mqtt = require('mqtt');
 
 // Conectar ao broker MQTT
-const client = mqtt.connect('mqtt://kafka-strimzi-kafka-bootstrap.amq-strimzi.svc.cluster.local:1883');
+const client = mqtt.connect('tcp://kafka-strimzi-kafka-bootstrap.amq-strimzi.svc.cluster.local:1883');
 
 // Tópico que desejamos subscrever
 const topic = 'messages_default';

@@ -1,16 +1,14 @@
+// Importar a biblioteca mqtt
 const mqtt = require('mqtt');
 
-const options = {
-    reconnectPeriod: 5000,  // Tenta reconectar a cada 5000 ms (5 segundos)
-};
+// Conectar ao broker MQTT do serviço mqtt-bridge
+const client = mqtt.connect('mqtt://mqtt-bridge.amq-strimzi.svc.cluster.local:1883');
 
-const client = mqtt.connect('mqtt://mqtt-bridge.amq-strimzi.svc.cluster.local:1883', options);
+// Tópico que desejamos subscrever
 const topic = 'messages_default';
 
 client.on('connect', function () {
     console.log('Connected to broker');
-    // Verificar se já está inscrito antes de tentar inscrever novamente
-    if (!client.connected) {
         client.subscribe(topic, function (err) {
             if (!err) {
                 console.log(`Subscribed to "${topic}"`);
@@ -18,17 +16,13 @@ client.on('connect', function () {
                 console.error('Subscription error:', err);
             }
         });
-    }
 });
 
 client.on('message', function (topic, message) {
+    // Mensagem é um buffer
     console.log(`Message received on "${topic}": ${message.toString()}`);
 });
 
 client.on('error', function (error) {
     console.error('Connection error:', error);
-});
-
-client.on('reconnect', function () {
-    console.log('Reconnecting...');
 });

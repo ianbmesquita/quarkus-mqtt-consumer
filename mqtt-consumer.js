@@ -1,9 +1,10 @@
 const mqtt = require('mqtt');
 
 const options = {
-    reconnectPeriod: 5000,  // Tenta reconectar a cada 5000 ms (5 segundos)
+    reconnectPeriod: 5000,
+    keepalive: 60,
+    connectTimeout: 30 * 1000 // Tempo de timeout para a conexão em milissegundos
 };
-
 const client = mqtt.connect('mqtt://mqtt-bridge.amq-strimzi.svc.cluster.local:1883', options);
 const topic = 'messages_default';
 
